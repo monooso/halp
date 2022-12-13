@@ -10,7 +10,9 @@ defmodule Halp.TicketsTest do
         assignee_id: insert(:user) |> Map.get(:id),
         customer_email: "alan.alda@mash.com",
         customer_name: "Alan Alda",
-        status: :pending
+        priority: :medium,
+        status: :pending,
+        subject: "I need help!"
       }
 
       assert {:ok, %Ticket{}} = Tickets.create_ticket(attrs)

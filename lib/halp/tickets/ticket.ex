@@ -9,16 +9,41 @@ defmodule Halp.Tickets.Ticket do
     field :customer_email, :string
     field :customer_name, :string
     field :status, Ecto.Enum, values: [:closed, :on_hold, :open, :pending, :solved, :spam]
+    field :subject, :string
+    field :priority, Ecto.Enum, values: [low: 1, medium: 2, high: 3, urgent: 4]
 
     belongs_to :assignee, User, foreign_key: :assignee_id
 
     timestamps()
   end
 
-  @doc false
+  @doc """
+  Returns a changeset for use when creating a ticket.
+  """
   def insert_changeset(attrs) do
+    required_attrs = [:customer_email, :customer_name, :status, :subject, :priority]
+    optional_attrs = [:assignee_id]
+
     %__MODULE__{}
-    |> cast(attrs, [:status, :customer_email, :customer_name])
-    |> validate_required([:status, :customer_email, :customer_name])
+    |> cast(attrs, optional_attrs ++ required_attrs)
+    |> validate_required(required_attrs)
+    |> validate_customer_email()
+    |> validate_customer_name()
+    |> validate_subject()
+    |> assoc_constraint(:assignee)
+  end
+
+  defp validate_customer_email(changeset) do
+    changeset
+    |> validate_format(:customer_email, ~r/@/, message: "must be a valid email")
+    |> validate_length(:customer_email, max: 255)
+  end
+
+  defp validate_customer_name(changeset) do
+    validate_length(changeset, :customer_name, min: 2, max: 255)
+  end
+
+  defp validate_subject(changeset) do
+    validate_length(changeset, :subject, min: 2, max: 255)
   end
 end
