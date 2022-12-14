@@ -52,8 +52,7 @@ defmodule HalpWeb do
 
   def live_view do
     quote do
-      use Phoenix.LiveView,
-        layout: {HalpWeb.Layouts, :app}
+      use Phoenix.LiveView, layout: {HalpWeb.Layouts, :app}
 
       unquote(html_helpers())
     end
@@ -82,9 +81,7 @@ defmodule HalpWeb do
 
   defp html_helpers do
     quote do
-      # HTML escaping functionality
-      import Phoenix.HTML
-      # Core UI components and translation
+      use Phoenix.HTML
       import HalpWeb.CoreComponents
       import HalpWeb.Gettext
 
