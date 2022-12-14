@@ -1,0 +1,15 @@
+<h1><%= @page_title %></h1>
+
+<.simple_form :let={f} for={@changeset} phx-submit="save">
+  <.input field={{f, :subject}} label="Subject" />
+  <.input field={{f, :message}} label="Details" type="textarea" />
+
+  <.input field={{f, :customer_name}} label="Customer Name" />
+  <.input field={{f, :customer_email}} label="Customer Email" />
+
+  <.input field={{f, :priority}} label="Priority" options={@priorities} type="select" />
+
+  <:actions>
+    <.button>Create ticket</.button>
+  </:actions>
+</.simple_form>

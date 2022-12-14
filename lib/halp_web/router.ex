@@ -76,10 +76,18 @@ defmodule HalpWeb.Router do
 
     delete "/users/log_out", UserSessionController, :delete
 
-    live_session :current_user,
-      on_mount: [{HalpWeb.UserAuth, :mount_current_user}] do
+    live_session :current_user, on_mount: [{HalpWeb.UserAuth, :mount_current_user}] do
       live "/users/confirm/:token", UserConfirmationLive, :edit
       live "/users/confirm", UserConfirmationInstructionsLive, :new
+    end
+  end
+
+  scope "/", HalpWeb do
+    pipe_through [:browser, :require_authenticated_user]
+
+    live_session :ticket, on_mount: [{HalpWeb.UserAuth, :ensure_authenticated}] do
+      live "/tickets", Tickets.BrowseLive
+      live "/tickets/new", Tickets.AddLive
     end
   end
 end
