@@ -6,6 +6,7 @@ defmodule Halp.Factory do
       assignee: build(:user),
       customer_email: sequence(:customer_email, &"customer-#{&1}@example.com"),
       customer_name: sequence(:customer_name, &"Example Customer #{&1}"),
+      message: "I need help!",
       priority: sequence(:priority, [:low, :medium, :high, :urgent]),
       status: sequence(:status, [:closed, :on_hold, :open, :pending, :solved, :spam]),
       subject: sequence(:subject, &"Example Subject #{&1}")

@@ -6,6 +6,7 @@ defmodule Halp.Repo.Migrations.CreateTickets do
       add :id, :binary_id, primary_key: true
       add :assignee_id, references(:users, type: :binary_id)
       add :subject, :string, null: false
+      add :message, :text, null: false
       add :status, :string, null: false
       add :priority, :integer, null: false, default: 1
       add :customer_email, :string, null: false

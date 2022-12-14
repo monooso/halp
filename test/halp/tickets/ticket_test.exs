@@ -11,8 +11,9 @@ defmodule Halp.Tickets.TicketTest do
           assignee_id: insert(:user) |> Map.get(:id),
           customer_email: "alan.alda@example.com",
           customer_name: "Alan Alda",
+          message: "I need help!",
           status: :pending,
-          subject: "I need help!",
+          subject: "Help Needed",
           priority: :medium
         }
       ]
@@ -90,6 +91,22 @@ defmodule Halp.Tickets.TicketTest do
       changeset = Ticket.insert_changeset(attrs)
 
       assert %{customer_name: ["should be at most 255 character(s)"]} = errors_on(changeset)
+    end
+
+    test "it requires a message", %{valid_attrs: attrs} do
+      attrs = Map.delete(attrs, :message)
+
+      changeset = Ticket.insert_changeset(attrs)
+
+      assert %{message: ["can't be blank"]} = errors_on(changeset)
+    end
+
+    test "message must be at least two characters", %{valid_attrs: attrs} do
+      attrs = %{attrs | message: "A"}
+
+      changeset = Ticket.insert_changeset(attrs)
+
+      assert %{message: ["should be at least 2 character(s)"]} = errors_on(changeset)
     end
 
     test "it requires a status", %{valid_attrs: attrs} do
